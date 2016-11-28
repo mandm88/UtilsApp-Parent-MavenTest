@@ -2,23 +2,16 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
 
-    <id>binary</id>
+    <id>scripts</id>
     <formats>
         <format>tar.gz</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
 
-    <dependencySets>
-        <dependencySet>
-            <useProjectArtifact>true</useProjectArtifact>
-            <outputDirectory>lib</outputDirectory>
-        </dependencySet>
-    </dependencySets>
-
     <fileSets>
         <fileSet>
-            <directory>${basedir}/lib</directory>
-            <outputDirectory>/lib</outputDirectory>
+            <directory>src/main/sh</directory>
+            <outputDirectory>/</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

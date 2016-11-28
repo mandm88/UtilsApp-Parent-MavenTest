@@ -12,18 +12,59 @@
 
     <artifactId>test.distribution</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.kd.utils</groupId>
+            <artifactId>string.app</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>scripts</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/scripts</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/sh</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.0.0</version>
-                <configuration>
-                    <descriptors>
-                        <descriptor>
-                            src/main/assembly/binary-assembly.xml
-                        </descriptor>
-                    </descriptors>
-                </configuration>
+
                 <executions>
                     <execution>
                         <id>make-assembly</id>
@@ -31,8 +72,31 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <configuration>
+                            <finalName>UtilApps-${project.version}</finalName>
+                            <descriptors>
+                                <descriptor>
+                                    src/main/assembly/binary-assembly.xml
+                                </descriptor>
+                            </descriptors>
+                        </configuration>
                     </execution>
-
+                    <execution>
+                        <id>sh</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>UtilApps-${project.version}</finalName>
+                            <appendAssemblyId>true</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>
+                                    src/main/assembly/sh-assembly.xml
+                                </descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
